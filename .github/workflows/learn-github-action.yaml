@@ -1,0 +1,14 @@
+name: learn-github-action
+on:
+  push:
+    branches:
+      - main
+jobs:
+  node-hello-word:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/chekout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: "16.16.0"
+      - run: node "console.log("hello world")"
