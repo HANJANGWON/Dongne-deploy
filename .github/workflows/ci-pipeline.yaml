@@ -11,5 +11,7 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: "16.16.0"
-      - run: npm install
-      - run: npm test
+      - name: Run Web Test
+        working-directory: ./dongne-web
+        run: npm install
+        run: npm test
