@@ -31,14 +31,14 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Server Build and push
         working-directory: ./dongne-server
-        id: docker_build
+        id: docker_server_build
         uses: docker/build-push-action@v2
         with:
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/docker-server:latest
       - name: Web Build and push
         working-directory: ./dongne-web
-        id: docker_build
+        id: docker_web_build
         uses: docker/build-push-action@v2
         with:
           push: true
