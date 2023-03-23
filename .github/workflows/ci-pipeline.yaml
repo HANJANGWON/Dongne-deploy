@@ -13,5 +13,6 @@ jobs:
           node-version: "16.16.0"
       - name: Run Web Test
         working-directory: ./dongne-web
-        run: npm install
-        run: npm test
+        run: |
+          npm install
+          npm test
