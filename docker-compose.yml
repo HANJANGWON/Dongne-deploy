@@ -1,0 +1,53 @@
+version: "3.9"
+
+networks:
+  dongne_net:
+    driver: bridge
+services:
+  postgres:
+    networks:
+      - dongne_net
+    image: postgres:13
+    restart: always
+    container_name: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+    volumes:
+      - ./dongne-server/postgresql/data:/var/lib/postgresql/data
+
+  server:
+    networks:
+      - dongne_net
+    image: hanjangwon/docker-server:version1
+    build:
+      context: ./dongne-server
+    container_name: server
+    ports:
+      - "4000:4000"
+    volumes:
+      - ./dongne-server:/app/server
+    env_file:
+      - .env
+    environment:
+      - DATABASE_URL=postgresql://${DB_USER}:${DB_PASSWORD}@postgres:${DB_PORT}/${DB_NAME}?schema=public
+    depends_on:
+      - postgres
+
+  web:
+    networks:
+      - dongne_net
+    image: hanjangwon/docker-web:version1
+    build:
+      context: ./dongne-web
+    container_name: web
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./dongne-web:/app/web
+    depends_on:
+      - postgres
+      - server
